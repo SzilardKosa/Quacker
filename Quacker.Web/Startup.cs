@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Quacker.Dal;
+using Quacker.Dal.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,8 @@ namespace Quacker.Web
         {
             services.AddDbContext<QuackerDbContext>(
                 o => o.UseSqlServer(Configuration.GetConnectionString(nameof(QuackerDbContext))));
+
+            services.AddScoped<PostService>();
 
             services.AddRazorPages();
         }
