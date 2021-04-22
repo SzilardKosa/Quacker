@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Quacker.Dal;
+using Quacker.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,11 @@ namespace Quacker.Web.Pages
             _logger = logger;
         }
 
-        public void OnGet()
-        {
+        public IReadOnlyCollection<Post> Posts { get; set; }
 
+        public void OnGet( [FromServices] QuackerDbContext context)
+        {
+            Posts = context.Posts.ToList();
         }
     }
 }

@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210421195045_ComplexDataModel.cs" />
+    <Compile Remove="Migrations\20210421195045_ComplexDataModel.Designer.cs" />
+    <Compile Remove="Migrations\20210422122010_ComplexDataModelSeed.cs" />
+    <Compile Remove="Migrations\20210422122010_ComplexDataModelSeed.Designer.cs" />
+    <Compile Remove="Migrations\20210422122724_ComplexDataModelSeed.cs" />
+    <Compile Remove="Migrations\20210422122724_ComplexDataModelSeed.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

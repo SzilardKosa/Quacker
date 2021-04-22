@@ -16,4 +16,26 @@
     <ProjectReference Include="..\Quacker.Dal\Quacker.Dal.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\imgs\posts\1\" />
+    <Folder Include="wwwroot\imgs\posts\3\" />
+    <Folder Include="wwwroot\imgs\posts\4\" />
+    <Folder Include="wwwroot\imgs\posts\5\" />
+    <Folder Include="wwwroot\imgs\posts\6\" />
+    <Folder Include="wwwroot\imgs\posts\7\" />
+    <Folder Include="wwwroot\imgs\posts\8\" />
+    <Folder Include="wwwroot\imgs\posts\9\" />
+    <Folder Include="wwwroot\imgs\posts\10\" />
+    <Folder Include="wwwroot\imgs\posts\11\" />
+    <Folder Include="wwwroot\imgs\posts\12\" />
+    <Folder Include="wwwroot\imgs\posts\13\" />
+    <Folder Include="wwwroot\imgs\posts\14\" />
+    <Folder Include="wwwroot\imgs\posts\15\" />
+    <Folder Include="wwwroot\imgs\posts\16\" />
+    <Folder Include="wwwroot\imgs\posts\17\" />
+    <Folder Include="wwwroot\imgs\posts\18\" />
+    <Folder Include="wwwroot\imgs\posts\19\" />
+    <Folder Include="wwwroot\imgs\posts\20\" />
+  </ItemGroup>
+
 </Project>
