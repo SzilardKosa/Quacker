@@ -29,7 +29,7 @@ namespace Quacker.Dal.Services
                     Author = new UserHeader
                     {
                         Id = p.User.Id,
-                        UserName = p.User.UserName,
+                        DisplayName = p.User.DisplayName,
                         HasImage = p.User.HasImage
                     },
                     NumberOfComments = p.Comments.Count(),

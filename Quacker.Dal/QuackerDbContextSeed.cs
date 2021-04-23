@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Quacker.Dal
 {
-    public partial class QuackerDbContext : DbContext
+    public partial class QuackerDbContext
     {
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            // modelBuilder.ApplyConfiguration(new UserEntityConfiguration()); Users are created with Identity!!!
             modelBuilder.ApplyConfiguration(new PostEntityConfiguration());
             modelBuilder.ApplyConfiguration(new LikeEntityConfiguration());
             modelBuilder.ApplyConfiguration(new CommentEntityConfiguration());

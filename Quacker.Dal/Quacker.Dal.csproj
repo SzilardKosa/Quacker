@@ -5,21 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20210421195045_ComplexDataModel.cs" />
-    <Compile Remove="Migrations\20210421195045_ComplexDataModel.Designer.cs" />
-    <Compile Remove="Migrations\20210422122010_ComplexDataModelSeed.cs" />
-    <Compile Remove="Migrations\20210422122010_ComplexDataModelSeed.Designer.cs" />
-    <Compile Remove="Migrations\20210422122724_ComplexDataModelSeed.cs" />
-    <Compile Remove="Migrations\20210422122724_ComplexDataModelSeed.Designer.cs" />
+    <Compile Remove="Migrations\20210423131720_InitialMigration.cs" />
+    <Compile Remove="Migrations\20210423131720_InitialMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.14">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.14" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.14">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.13" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.13">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

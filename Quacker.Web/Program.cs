@@ -13,11 +13,11 @@ namespace Quacker.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args)
+            (await CreateHostBuilder(args)
                 .Build()
-                .MigrateDatabase<QuackerDbContext>()
+                .MigrateDatabaseAsync<QuackerDbContext>())
                 .Run();
         }
 

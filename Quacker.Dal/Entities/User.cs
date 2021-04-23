@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Quacker.Dal.Entities
 {
-    public class User
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
         [Required]
-        [StringLength(20, ErrorMessage = "Username cannot be longer than 20 characters.")]
-        public string UserName { get; set; }
+        [StringLength(40, ErrorMessage = "User name cannot be longer than 40 characters.")]
+        public string DisplayName { get; set; }
         public bool HasImage { get; set; }
         // N - 1 navigation props
         public ICollection<Post> Posts { get; set; }
