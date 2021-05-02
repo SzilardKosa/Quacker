@@ -1,0 +1,79 @@
+﻿@page
+@model Quacker.Web.Pages.User.MessagesModel
+@{
+}
+
+<div class="qw-dm-page">
+    <div class="row qw-dm-section">
+        <!-- PEOPLE YOU CHAT WITH -->
+        <div class="col-md-3 mb-3">
+            <h4>
+                Direct messages
+            </h4>
+
+            <ul class="qw-dm-list">
+                @foreach (var user in Model.ChatRooms)
+                {
+                    <li class="mt-2">
+                        <a asp-page="/User/Messages" asp-route-id="@user.Id">
+                            @if (user.HasImage)
+                            {
+                                <img class="qw-sm-profile" src="/imgs/users/@(user.Id).jpg">
+                            }
+                            else
+                            {
+                                <img class="qw-sm-profile" src="/imgs/default.jpg">
+                            }
+                            @user.DisplayName
+                        </a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+
+        <div class="col-md-9 qw-dm-section d-flex flex-column">
+            <h3 class="pl-3">
+                @Model.CurrentChat
+            </h3>
+
+            <!-- MESSAGES -->
+
+            <ul class="qw-dms p-3 flex-grow-1">
+                @foreach (var message in Model.Messages)
+                {
+                    <li class="qw-dm py-2">
+                        @if (message.Author.HasImage)
+                        {
+                            <img class="qw-sm-profile" src="/imgs/users/@(message.Author.Id).jpg">
+                        }
+                        else
+                        {
+                            <img class="qw-sm-profile" src="/imgs/default.jpg">
+                        }
+                        <div class="d-flex flex-row">
+                            <a asp-page="/Profile" asp-route-id="@message.Author.Id" class="qw-dm-author">@message.Author.DisplayName</a>
+                            <div class="qw-dm-date ml-1">@message.CreationDate.Humanize()</div>
+                        </div>
+                        <div class="qw-dm-content">@message.Content</div>
+                    </li>
+                }
+            </ul>
+            <!-- New message -->
+            <div class="row p-3">
+                <div class="input-group">
+                    <textarea id="new-message-text"
+                              class="form-control"
+                              aria-label="With textarea"></textarea>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary">
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

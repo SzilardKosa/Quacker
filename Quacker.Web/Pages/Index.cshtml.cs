@@ -21,11 +21,8 @@ namespace Quacker.Web.Pages
             _logger = logger;
         }
 
-        public IEnumerable<PostHeader> Posts { get; set; }
-
-        public void OnGet( [FromServices] PostService postService )
+        public void OnGet(  )
         {
-            Posts = postService.GetPosts();
         }
     }
 }

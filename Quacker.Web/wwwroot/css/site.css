@@ -1,14 +1,14 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
+/*a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
-}
+}*/
 
 /* Provide sufficient contrast against white background */
-a {
+/*a {
   color: #0366d6;
 }
 
@@ -22,7 +22,7 @@ a {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
-}
+}*/
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -68,4 +68,355 @@ body {
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+
+/*
+Own CSS */
+/* Navbar */
+.qw-navbar .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+    .qw-navbar .navbar-nav .nav-link.active,
+    .qw-navbar .navbar-nav .nav-link:hover {
+        color: #fff;
+        background-color: transparent;
+    }
+
+    .qw-navbar .navbar-nav .nav-link.active {
+        font-weight: 600;
+    }
+
+.qw-navbar {
+    background-color: royalblue;
+}
+
+/* Logo */
+.qw-logo {
+    height: 32px;
+    fill: white;
+}
+
+/* People you follow list */
+.qw-follow-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+    .qw-follow-list li {
+        display: inline-block;
+    }
+/* Profile */
+.qw-sm-profile {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+}
+
+.qw-md-profile {
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+}
+
+.qw-lg-profile {
+    width: 128px;
+    height: 128px;
+    border-radius: 100%;
+}
+/* Card */
+.qw-clickable-card {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    border-radius: 12px;
+}
+
+    .qw-clickable-card:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    }
+
+.qw-card {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    border-radius: 12px;
+}
+
+/* Post list */
+.qw-posts {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.qw-post .qw-post-header {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-column-gap: 0;
+}
+
+    .qw-post .qw-post-header img {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+
+    .qw-post .qw-post-header .qw-post-author {
+        color: black;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .qw-post .qw-post-header .qw-post-date {
+        color: gray;
+    }
+
+.qw-post .qw-post-content {
+    margin-left: 52px;
+}
+
+    .qw-post .qw-post-content img {
+        width: 100%;
+        border-radius: 12px;
+    }
+
+.qw-post .qw-post-footer {
+    margin-left: 52px;
+    display: flex;
+}
+
+    .qw-post .qw-post-footer .qw-post-breads,
+    .qw-post .qw-post-footer .qw-post-comments {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .qw-post .qw-post-footer .fas {
+        color: #999;
+    }
+
+    .qw-post .qw-post-footer .qw-post-breads .active {
+        color: rgba(248, 0, 88);
+    }
+
+.qw-post {
+    position: relative;
+}
+
+    .qw-post .qw-post-link {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+/* Comment section */
+.qw-comment-section {
+    border: 2px solid #ddd;
+}
+
+.qw-comments {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.qw-add-comment {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-column-gap: 0;
+}
+
+.qw-comment {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-column-gap: 0;
+}
+
+    .qw-comment img {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+
+    .qw-comment .qw-post-author {
+        color: black;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .qw-comment .qw-post-date {
+        color: gray;
+    }
+
+    .qw-comment .qw-comment-content {
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+
+/* Users search result */
+.qw-users {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.qw-user {
+    /* border: 2px solid #ddd; */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    border-radius: 12px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 84px auto auto;
+    grid-column-gap: 0;
+}
+
+    .qw-user:hover {
+        box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    }
+
+    .qw-user .qw-user-link {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .qw-user img {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+
+    .qw-user .qw-user-name {
+        color: black;
+        font-weight: bold;
+        z-index: 1;
+        align-self: center;
+    }
+
+    .qw-user .qw-user-followers {
+        color: gray;
+        align-self: center;
+    }
+
+    .qw-user .qw-user-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        grid-column: 3;
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+
+        .qw-user .qw-user-buttons span {
+            z-index: 1;
+        }
+
+
+/* Other user profile page */
+.qw-profile-header {
+    display: grid;
+    grid-template-columns: 136px auto;
+    grid-column-gap: 0;
+}
+
+    .qw-profile-header img {
+        grid-row-start: 1;
+        grid-row-end: 4;
+    }
+
+    .qw-profile-header .qw-user-name {
+        color: black;
+        font-weight: bold;
+        z-index: 1;
+        align-self: center;
+    }
+
+    .qw-profile-header .qw-user-followers {
+        color: gray;
+        align-self: center;
+    }
+
+    .qw-profile-header .qw-user-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+    }
+/* Add post */
+.qw-add-post {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-column-gap: 0;
+}
+
+/* Direct messages */
+.qw-dm-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+    .qw-dm-list li {
+        display: inline-block;
+    }
+
+/* DM */
+.qw-dm-page {
+    min-height: calc(100vh - 60px - 24px - 24px - 60px);
+}
+@media (min-width: 768px) {
+    .qw-dm-page {
+        height: calc(100vh - 60px - 24px - 24px - 60px);
+    }
+}
+
+.qw-dm-section {
+    height: 100%;
+}
+
+.qw-dms {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.qw-dm {
+    display: grid;
+    grid-template-columns: 52px auto;
+    grid-column-gap: 0;
+}
+
+    .qw-dm img {
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+
+    .qw-dm .qw-dm-author {
+        color: black;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .qw-dm .qw-dm-date {
+        color: gray;
+    }
+
+    .qw-dm .qw-dm-content {
+        grid-column-start: 2;
+        grid-column-end: 3;
+    }
+
+/*Logout button*/
+.qw-logout {
+    border-radius: 0;
 }

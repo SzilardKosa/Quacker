@@ -1,0 +1,93 @@
+﻿@page
+@model Quacker.Web.Pages.PostModel
+@{
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="qw-post p-3 qw-card">
+            <div class="qw-post-header">
+                @if (Model.Post.Author.HasImage)
+                {
+                    <img class="qw-sm-profile" src="/imgs/users/@(Model.Post.Author.Id).jpg">
+                }
+                else
+                {
+                    <img class="qw-sm-profile" src="/imgs/default.jpg">
+                }
+                <a asp-page="/Profile" asp-route-id="@Model.Post.Author.Id" class="qw-post-author">@Model.Post.Author.DisplayName</a>
+                <div class="qw-post-date">@Model.Post.CreationDate.Humanize()</div>
+            </div>
+
+            <div class="qw-post-content">
+                @Model.Post.Content
+                @if (Model.Post.HasImage)
+                {
+                    <img src="/imgs/posts/@Model.Post.Author.Id/@(Model.Post.Id).jpg">
+                }
+            </div>
+
+
+            <div class="qw-post-footer mt-2">
+                <div class="qw-post-breads">
+                    @if (Model.Post.HasCurrentUserLikedIt)
+                    {
+                        <i class="fas fa-bread-slice fa-lg active"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-bread-slice fa-lg"></i>
+                    }
+                    @Model.Post.NumberOfLikes
+                </div>
+                <div class="qw-post-comments">
+                    <i class="fas fa-comment fa-lg"></i>
+                    @Model.Post.NumberOfComments
+                </div>
+            </div>
+        </div>
+
+        <div class="qw-comment-section p-3 mb-3 qw-card">
+            <h4>Comments</h4>
+            <div class="qw-add-comment">
+                @if (Model.CurrentUser.HasImage)
+                {
+                    <img class="qw-sm-profile" src="/imgs/users/@(Model.CurrentUser.Id).jpg">
+                }
+                else
+                {
+                    <img class="qw-sm-profile" src="/imgs/default.jpg">
+                }
+                <form>
+                    <textarea class="form-control" id="your-comment" rows="3"></textarea>
+                    <div class="d-flex flex-row justify-content-end mt-2">
+                        <button type="button" class="btn btn-light mr-2">Cancel</button>
+                        <button type="button" class="btn btn-primary">Post</button>
+                    </div>
+                </form>
+            </div>
+
+            <ul class="qw-comments">
+                @foreach (var comment in Model.Comments)
+                {
+                <li class="qw-comment py-2">
+                    @if (comment.Author.HasImage)
+                    {
+                        <img class="qw-sm-profile" src="/imgs/users/@(comment.Author.Id).jpg">
+                    }
+                    else
+                    {
+                        <img class="qw-sm-profile" src="/imgs/default.jpg">
+                    }
+                    <a asp-page="/Profile" asp-route-id="@comment.Author.Id" class="qw-post-author">@comment.Author.DisplayName</a>
+                    <div class="qw-post-date">@comment.CreationDate.Humanize()</div>
+                    <div class="qw-comment-content">@comment.Content</div>
+                </li>
+                }
+            </ul>
+
+
+
+        </div>
+    </div>
+</div>

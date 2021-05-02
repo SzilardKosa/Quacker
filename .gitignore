@@ -32,3 +32,6 @@ msbuild.wrn
 .vs/
 
 Resources/
+
+# Api keys
+appsettings.json

@@ -45,6 +45,13 @@ namespace Quacker.Web
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Identity/Account/Login";
+                options.LogoutPath = "/Identity/Account/Logout";
+            });
+
             // SMTP szerver beállításokat felolvassa az appsettings.json-ból a MailSettings osztályba.
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IEmailSender, Services.EmailSender>();
@@ -52,9 +59,15 @@ namespace Quacker.Web
             services.AddScoped<IRoleSeedService, RoleSeedService>()
                 .AddScoped<IUserSeedService, UserSeedService>();
 
-            services.AddScoped<PostService>();
+            services.AddScoped<PostService>()
+                    .AddScoped<UserService>()
+                    .AddScoped<CommentService>()
+                    .AddScoped<MessageService>();
 
-            services.AddRazorPages();
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/User");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

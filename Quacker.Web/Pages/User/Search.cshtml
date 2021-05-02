@@ -1,0 +1,50 @@
+﻿@page
+@model Quacker.Web.Pages.User.SearchModel
+@{
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3>
+            @Model.Users.AllResultsCount Search results for '@Model.SearchTerm'
+        </h3>
+
+        <ul class="qw-users">
+            @foreach (var user in Model.Users.Results)
+            {
+                <li class="qw-user mt-3 p-3">
+                    <a class="qw-user-link" asp-page="/Profile" asp-route-id="@user.Id"></a>
+                    @if (user.HasImage)
+                    {
+                        <img class="qw-md-profile" src="/imgs/users/@(user.Id).jpg">
+                    }
+                    else
+                    {
+                        <img class="qw-md-profile" src="/imgs/default.jpg">
+                    }
+                    <a asp-page="/Profile" asp-route-id="@user.Id" class="qw-user-name">@user.DisplayName</a>
+                    <div class="qw-user-followers">@user.NumberOfFollowers followers</div>
+                    <div class="qw-user-buttons">
+                        <span>
+                            @if (!user.isFollowedByCurrentUser)
+                            {
+                                <button type="button" class="btn btn-primary ml-3">Follow</button>
+                            }
+                            <button type="button" class="btn btn-primary ml-3 my-1">Direct message</button>
+                        </span>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <vc:pager page-size="Model.Users.PageSize"
+                  page-number="Model.Users.PageNumber"
+                  all-results-count="Model.Users.AllResultsCount"
+                  pages-to-show="3">
+        </vc:pager>
+    </div>
+</div>
