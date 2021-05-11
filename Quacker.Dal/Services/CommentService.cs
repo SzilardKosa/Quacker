@@ -1,4 +1,5 @@
 ﻿using Quacker.Dal.Dto;
+using Quacker.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,25 @@ namespace Quacker.Dal.Services
                 .ToList();
 
             return comments;
+        }
+
+        public void CreateComment(NewComment newComment)
+        {
+            DbContext.Comments.Add(new Comment
+            {
+                CreationDate = DateTime.UtcNow,
+                Content = newComment.Content,
+                UserId = newComment.UserId,
+                PostId = newComment.PostId
+            });
+
+            DbContext.SaveChanges();
+        }
+
+        public void DeleteComment(int commentId)
+        {
+            DbContext.Comments.Remove(new Comment { Id = commentId });
+            DbContext.SaveChanges();
         }
 
     }

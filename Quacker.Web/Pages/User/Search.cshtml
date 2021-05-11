@@ -26,9 +26,9 @@
                     <div class="qw-user-followers">@user.NumberOfFollowers followers</div>
                     <div class="qw-user-buttons">
                         <span>
-                            @if (!user.isFollowedByCurrentUser)
+                            @if (user.isFollowedByCurrentUser)
                             {
-                                <button type="button" class="btn btn-primary ml-3">Follow</button>
+                                <strong class="ml-3">Followed</strong>
                             }
                             <button type="button" class="btn btn-primary ml-3 my-1">Direct message</button>
                         </span>

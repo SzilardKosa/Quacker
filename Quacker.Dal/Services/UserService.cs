@@ -1,10 +1,12 @@
-﻿using Quacker.Dal.Dto;
+﻿using Microsoft.EntityFrameworkCore;
+using Quacker.Dal.Dto;
 using Quacker.Dal.Entities;
 using Quacker.Dal.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Quacker.Dal.Services
 {
@@ -46,6 +48,29 @@ namespace Quacker.Dal.Services
                 .SingleOrDefault();
 
             return user;
+        }
+
+        public async Task<UserHeader> GetCurrentUserAsync(int currentUserId)
+        {
+            var user = await DbContext.Users
+                .Where(u => u.Id == currentUserId)
+                .Select(u => new UserHeader
+                {
+                    Id = u.Id,
+                    DisplayName = u.DisplayName,
+                    HasImage = u.HasImage
+                })
+                .SingleOrDefaultAsync();
+
+            return user;
+        }
+
+        public async Task UpdateCurrentUserAsync(int currentUserId, bool hasImage)
+        {
+            var user = await DbContext.Users.SingleAsync(u => u.Id == currentUserId);
+            user.HasImage = hasImage;
+
+            await DbContext.SaveChangesAsync();
         }
 
         public UserDetails GetUser(int currentUserId, int userId)
@@ -102,6 +127,28 @@ namespace Quacker.Dal.Services
                 PageSize = specification.PageSize,
                 Results = users
             };
+        }
+
+        public void FollowUser(int followerId, int followedId)
+        {
+            DbContext.Followings.Add(new Following
+            {
+                FollowerId = followerId,
+                FollowedId = followedId
+            });
+
+            DbContext.SaveChanges();
+        }
+
+        public void UnfollowUser(int followerId, int followedId)
+        {
+            DbContext.Followings.Remove(new Following
+            {
+                FollowerId = followerId,
+                FollowedId = followedId
+            });
+
+            DbContext.SaveChanges();
         }
 
     }

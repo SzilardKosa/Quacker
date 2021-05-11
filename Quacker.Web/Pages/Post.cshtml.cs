@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Ganss.XSS;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Quacker.Dal.Dto;
@@ -29,9 +30,48 @@ namespace Quacker.Web.Pages
         public PostHeader Post { get; set; }
         public UserHeader CurrentUser { get; set; }
 
+        [BindProperty]
+        public NewComment NewComment { get; set; }
+
+        [BindProperty]
+        public int DeleteCommentId { get; set; }
+
         public List<CommentData> Comments { get; set; }
 
         public void OnGet()
+        {
+            LoadModel();
+            NewComment = new NewComment { PostId = Id, Content = "" };
+        }
+
+        public IActionResult OnPostCreateComment()
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    NewComment.UserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    commentService.CreateComment(NewComment);
+                    return RedirectToPage("/Post", new { Id = NewComment.PostId });
+                }
+                catch (Exception ex)
+                {
+                    // TODO: Log
+                    ModelState.AddModelError("", "An error occurred while creating your comment");
+                }
+            }
+            Id = NewComment.PostId;
+            LoadModel();
+            return Page();
+        }
+
+        public IActionResult OnPostDeleteComment()
+        {
+            commentService.DeleteComment(DeleteCommentId);
+            return RedirectToPage("/Post", new { Id = Id });
+        }
+
+        private void LoadModel()
         {
             int currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             CurrentUser = userService.GetCurrentUser(currentUserId);

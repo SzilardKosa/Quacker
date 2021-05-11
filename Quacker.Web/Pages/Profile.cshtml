@@ -21,6 +21,8 @@
                 <div class="qw-user-followers">@Model.Profile.NumberOfFollowers followers</div>
             </div>
             <!-- CREATE NEW POST -->
+            <h3>Create new post</h3>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="qw-add-post p-3 my-3">
                 @if (Model.Profile.HasImage)
                 {
@@ -30,24 +32,20 @@
                 {
                     <img class="qw-sm-profile" src="/imgs/default.jpg">
                 }
-                <form>
-                    <textarea class="form-control" id="your-post" rows="3"></textarea>
+            <form asp-page-handler="CreatePost" method="post" enctype="multipart/form-data" role="form">
+                <input type="hidden" asp-for="NewPost.UserId" />
+                <textarea class="form-control" id="your-post" rows="3" asp-for="NewPost.Content"></textarea>
+                <span asp-validation-for="NewPost.Content" class="text-danger"></span>
 
-                    <div class="input-group mt-2">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGroupFile02">
-                            <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
-                        </div>
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
-                        </div>
-                    </div>
+                <div class="form-group mt-2">
+                    <label asp-for="CoverImage">Add image</label>
+                    <input asp-for="CoverImage" type="file">
+                </div>
 
-                    <div class="d-flex flex-row justify-content-end mt-2">
-                        <button type="button" class="btn btn-light mr-2">Cancel</button>
-                        <button type="button" class="btn btn-primary">Post</button>
-                    </div>
-                </form>
+                <div class="d-flex flex-row justify-content-end mt-2">
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
             </div>
         }
         else
@@ -67,7 +65,17 @@
                     <span>
                         @if (!Model.Profile.isFollowedByCurrentUser)
                         {
-                            <button type="button" class="btn btn-primary ml-3">Follow</button>
+                            <form asp-page-handler="Follow">
+                                <input type="hidden" asp-for="UserId" name="id"/>
+                                <button type="submit" class="btn btn-primary ml-3">Follow</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-page-handler="Unfollow">
+                                <input type="hidden" asp-for="UserId" name="id"/>
+                                <button type="submit" class="btn btn-secondary ml-3">Unfollow</button>
+                            </form>
                         }
                         <button type="button" class="btn btn-primary ml-3 my-1">Direct message</button>
                     </span>
@@ -92,6 +100,15 @@
                         }
                         <a asp-page="/Profile" asp-route-id="@post.Author.Id" class="qw-post-author">@post.Author.DisplayName</a>
                         <div class="qw-post-date">@post.CreationDate.Humanize()</div>
+                        <div class="qw-user-buttons">
+                            <span>
+                                <form asp-page-handler="DeletePost">
+                                    <input type="hidden" asp-for="DeletePostId" value="@post.Id" />
+                                    <input type="hidden" asp-for="UserId" />
+                                    <button type="submit" class="btn btn-danger ml-3">Delete</button>
+                                </form>
+                            </span>
+                        </div>
                     </div>
 
                     <div class="qw-post-content">
@@ -135,3 +152,7 @@
         </vc:pager>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

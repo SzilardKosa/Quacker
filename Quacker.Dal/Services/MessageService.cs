@@ -1,4 +1,5 @@
 ﻿using Quacker.Dal.Dto;
+using Quacker.Dal.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,19 @@ namespace Quacker.Dal.Services
                 .ToList();
 
             return messages;
+        }
+
+        public void CreateMessage(NewMessage newMessage)
+        {
+            DbContext.Messages.Add(new Message
+            {
+                CreationDate = DateTime.UtcNow,
+                Content = newMessage.Content,
+                ReceiverId = newMessage.ReceiverId,
+                SenderId = newMessage.SenderId
+            });
+
+            DbContext.SaveChanges();
         }
     }
 }

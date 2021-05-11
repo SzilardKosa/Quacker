@@ -114,6 +114,50 @@ namespace Quacker.Dal.Services
             return post;
         }
 
+        public int CreatePost(NewPost newPost)
+        {
+            Post post = new Post
+            {
+                CreationDate = DateTime.UtcNow,
+                Content = newPost.Content,
+                HasImage = newPost.HasImage,
+                UserId = newPost.UserId,
+            };
+            DbContext.Posts.Add(post);
+
+            DbContext.SaveChanges();
+
+            return post.Id;
+        }
+
+        public void DeletePost(int postId)
+        {
+            DbContext.Posts.Remove(new Post { Id = postId });
+            DbContext.SaveChanges();
+        }
+
+        public void LikePost(int postId, int userId)
+        {
+            DbContext.Likes.Add(new Like
+            {
+                PostId = postId,
+                UserId = userId
+            });
+
+            DbContext.SaveChanges();
+        }
+
+        public void UnlikePost(int postId, int userId)
+        {
+            DbContext.Likes.Remove(new Like
+            {
+                PostId = postId,
+                UserId = userId
+            });
+
+            DbContext.SaveChanges();
+        }
+
 
 
     }

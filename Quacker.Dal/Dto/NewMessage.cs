@@ -5,13 +5,13 @@ using System.Text;
 
 namespace Quacker.Dal.Dto
 {
-    public class CommentData
+    public class NewMessage
     {
         // Comment entity
-        public int Id { get; set; }
-        public DateTime CreationDate { get; set; }
+        [Required]
         public string Content { get; set; }
         // Other entities
-        public UserHeader Author { get; set; }
+        public int SenderId { get; set; }
+        public int ReceiverId { get; set; }
     }
 }

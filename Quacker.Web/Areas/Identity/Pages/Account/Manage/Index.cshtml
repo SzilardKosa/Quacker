@@ -9,7 +9,7 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
+        <form id="profile-form" method="post" enctype="multipart/form-data" role="form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username"></label>
@@ -20,8 +20,23 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="CoverImage">Add image</label>
+                <input asp-for="CoverImage" type="file">
+                <span asp-validation-for="CoverImage" class="text-danger"></span>
+            </div>
             <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
         </form>
+    </div>
+    <div class="col-md-6">
+        @if (Model.CurrentUser.HasImage)
+        {
+            <img class="qw-lg-profile" src="/imgs/users/@(Model.CurrentUser.Id).jpg">
+        }
+        else
+        {
+            <img class="qw-lg-profile" src="/imgs/default.jpg">
+        }
     </div>
 </div>
 
