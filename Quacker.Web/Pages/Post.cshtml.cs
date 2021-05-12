@@ -67,8 +67,22 @@ namespace Quacker.Web.Pages
 
         public IActionResult OnPostDeleteComment()
         {
-            commentService.DeleteComment(DeleteCommentId);
+            if (CanCurrentUserDelete(DeleteCommentId))
+            {
+                commentService.DeleteComment(DeleteCommentId);
+            }
             return RedirectToPage("/Post", new { Id = Id });
+        }
+
+        private bool CanCurrentUserDelete(int deleteCommentId)
+        {
+            int currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var Comment = commentService.GetComment(deleteCommentId);
+            if(currentUserId == Comment.Author.Id || User.IsInRole("Administrator"))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void LoadModel()

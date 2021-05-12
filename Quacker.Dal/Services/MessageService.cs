@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Quacker.Dal.Services
 {
@@ -57,7 +58,7 @@ namespace Quacker.Dal.Services
             return messages;
         }
 
-        public void CreateMessage(NewMessage newMessage)
+        public async Task CreateMessage(NewMessage newMessage)
         {
             DbContext.Messages.Add(new Message
             {
@@ -67,7 +68,7 @@ namespace Quacker.Dal.Services
                 SenderId = newMessage.SenderId
             });
 
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
     }
 }

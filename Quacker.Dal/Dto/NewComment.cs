@@ -9,6 +9,7 @@ namespace Quacker.Dal.Dto
     {
         // Comment entity
         [Required]
+        [StringLength(281, ErrorMessage = "Comment cannot be longer than 281 characters.")]
         public string Content { get; set; }
         // Other entities
         public int UserId { get; set; }

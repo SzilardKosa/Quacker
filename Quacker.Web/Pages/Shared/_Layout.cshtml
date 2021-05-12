@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @*stylesheets*@
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"  />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -14,20 +14,11 @@
     <header>
         <nav class="navbar navbar-expand-lg qw-navbar navbar-dark">
             <div class="container">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a class="navbar-brand" asp-area="" asp-page="/User/Home">
-                        <img src="~/imgs/duck-facing-right.svg" alt="duck facing right" class="qw-logo">
-                        Quacker
-                    </a>
-                }
-                else
-                {
-                    <a class="navbar-brand" asp-area="" asp-page="/Index">
-                        <img src="~/imgs/duck-facing-right.svg" alt="duck facing right" class="qw-logo">
-                        Quacker
-                    </a>
-                }
+
+                <a class="navbar-brand" asp-area="" asp-page="/Index">
+                    <img src="~/imgs/duck-facing-right.svg" alt="duck facing right" class="qw-logo">
+                    Quacker
+                </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -52,7 +43,7 @@
                             </li>
                             <!-- MY POSTS -->
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Profile">My posts</a>
+                                <a class="nav-link" asp-area="" asp-page="/Profile">My quacks</a>
                             </li>
                             <!-- MESSAGES -->
                             <li class="nav-item">
@@ -68,17 +59,26 @@
             </div>
         </nav>
     </header>
-    <div class="container mt-4">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    @if (ViewContext.RouteData.Values["page"].ToString() == "/Index")
+    {
+        @RenderBody()
+    }
+    else
+    {
+        <div class="container mt-4">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+
+    <footer class="footer text-muted">
         <div class="container">
             &copy; 2021 - Quacker.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

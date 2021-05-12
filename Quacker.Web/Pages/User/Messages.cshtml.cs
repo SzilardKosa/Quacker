@@ -29,20 +29,30 @@ namespace Quacker.Web.Pages.User
         public List<MessageData> Messages { get; set; }
 
         public string CurrentChat { get; set; }
+        public int CurrentUserId { get; set; }
 
         public void OnGet()
         {
-            int currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            ChatRooms = messageService.GetChatRooms(currentUserId);
-            if (UserId == 0)
+            CurrentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            ChatRooms = messageService.GetChatRooms(CurrentUserId);
+            if (ChatRooms.Count > 0)
             {
-                CurrentChat = ChatRooms[0].DisplayName;
-                UserId = ChatRooms[0].Id;
+                if (UserId == 0)
+                {
+                    CurrentChat = ChatRooms[0].DisplayName;
+                    UserId = ChatRooms[0].Id;
+                } else
+                {
+                    CurrentChat = userService.GetUser(CurrentUserId, UserId).DisplayName;
+                }
+                Messages = messageService.GetMessages(CurrentUserId, UserId);
             } else
             {
-                CurrentChat = userService.GetUser(currentUserId, UserId).DisplayName;
+                if (UserId != 0)
+                {
+                    CurrentChat = userService.GetUser(CurrentUserId, UserId).DisplayName;
+                }
             }
-            Messages = messageService.GetMessages(currentUserId, UserId);
         }
     }
 }

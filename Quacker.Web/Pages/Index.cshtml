@@ -4,7 +4,34 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="qw-main-bg">
+        <div class="qw-main-center">
+            <h1 class="display-1 mt-5">
+                Welcome back to Qwacker!
+            </h1>
+        </div>
+    </div>
+}
+else
+{
+    <div class="qw-main-bg">
+        <div class="qw-main-center">
+            <h1 class="display-1 mt-5">
+                Welcome to Qwacker!
+            </h1>
+            <div class="d-flex align-items-">
+                <a class="btn btn-primary btn-lg mr-2"
+                   id="register" asp-area="Identity" asp-page="/Account/Register">
+                    Register
+                </a>
+                <a class="btn btn-outline-primary btn-lg"
+                   id="login" asp-area="Identity" asp-page="/Account/Login">
+                    Login
+                </a>
+            </div>
+        </div>
+    </div>
+
+}

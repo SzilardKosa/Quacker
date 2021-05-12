@@ -66,18 +66,20 @@
                         @if (!Model.Profile.isFollowedByCurrentUser)
                         {
                             <form asp-page-handler="Follow">
-                                <input type="hidden" asp-for="UserId" name="id"/>
+                                <input type="hidden" asp-for="UserId" name="id" />
                                 <button type="submit" class="btn btn-primary ml-3">Follow</button>
                             </form>
                         }
                         else
                         {
                             <form asp-page-handler="Unfollow">
-                                <input type="hidden" asp-for="UserId" name="id"/>
+                                <input type="hidden" asp-for="UserId" name="id" />
                                 <button type="submit" class="btn btn-secondary ml-3">Unfollow</button>
                             </form>
                         }
-                        <button type="button" class="btn btn-primary ml-3 my-1">Direct message</button>
+                        <a asp-page="/User/Messages" asp-route-id="@Model.Profile.Id" class="btn btn-primary ml-3 my-1">
+                            Direct message
+                        </a>
                     </span>
                 </div>
             </div>
@@ -85,58 +87,18 @@
         <hr>
         <!-- POSTS -->
         <ul class="qw-posts mt-2">
+            @if (Model.Posts.AllResultsCount == 0)
+            {
+                <div class="d-flex justify-content-center" style="width: 100%;">
+                    <div class="text-muted">No quacks yet!</div>
+                </div>
+            }
             @foreach (var post in Model.Posts.Results)
             {
                 <li class="qw-post p-3 qw-clickable-card mb-3">
                     <a class="qw-post-link" asp-page="/Post" asp-route-id="@post.Id"></a>
-                    <div class="qw-post-header">
-                        @if (post.Author.HasImage)
-                        {
-                            <img class="qw-sm-profile" src="/imgs/users/@(post.Author.Id).jpg">
-                        }
-                        else
-                        {
-                            <img class="qw-sm-profile" src="/imgs/default.jpg">
-                        }
-                        <a asp-page="/Profile" asp-route-id="@post.Author.Id" class="qw-post-author">@post.Author.DisplayName</a>
-                        <div class="qw-post-date">@post.CreationDate.Humanize()</div>
-                        <div class="qw-user-buttons">
-                            <span>
-                                <form asp-page-handler="DeletePost">
-                                    <input type="hidden" asp-for="DeletePostId" value="@post.Id" />
-                                    <input type="hidden" asp-for="UserId" />
-                                    <button type="submit" class="btn btn-danger ml-3">Delete</button>
-                                </form>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="qw-post-content">
-                        @post.Content
-                        @if (post.HasImage)
-                        {
-                            <img src="/imgs/posts/@post.Author.Id/@(post.Id).jpg">
-                        }
-                    </div>
-
-
-                    <div class="qw-post-footer mt-2">
-                        <div class="qw-post-breads">
-                            @if (post.HasCurrentUserLikedIt)
-                            {
-                                <i class="fas fa-bread-slice fa-lg active"></i>
-                            }
-                            else
-                            {
-                                <i class="fas fa-bread-slice fa-lg"></i>
-                            }
-                            @post.NumberOfLikes
-                        </div>
-                        <div class="qw-post-comments">
-                            <i class="fas fa-comment fa-lg"></i>
-                            @post.NumberOfComments
-                        </div>
-                    </div>
+                    <vc:post post="post" is-deletable="@Model.CanCurrentUserDelete" user-id="@Model.UserId" delete-post-id="@Model.DeletePostId">
+                    </vc:post>
                 </li>
             }
         </ul>

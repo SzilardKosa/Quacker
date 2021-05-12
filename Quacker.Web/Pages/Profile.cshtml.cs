@@ -55,6 +55,7 @@ namespace Quacker.Web.Pages
         public int DeletePostId { get; set; }
 
         public int CurrentUserId { get; set; }
+        public bool CanCurrentUserDelete { get; set; }
 
         public void OnGet()
         {
@@ -133,7 +134,12 @@ namespace Quacker.Web.Pages
 
         public IActionResult OnPostDeletePost()
         {
-            postService.DeletePost(DeletePostId);
+            int currentUserId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var Post = postService.GetPost(currentUserId, DeletePostId);
+            if (currentUserId == Post.Author.Id || User.IsInRole("Administrator"))
+            {
+                postService.DeletePost(DeletePostId);
+            }
             return RedirectToPage("/Profile", new { Id = UserId });
         }
 
@@ -160,13 +166,12 @@ namespace Quacker.Web.Pages
             }
             Posts = postService.GetPostsOfUser(CurrentUserId, UserId, Specification);
             Profile = userService.GetUser(CurrentUserId, UserId);
-            if (UserId == CurrentUserId)
+            IsItOwnProfile = UserId == CurrentUserId;
+
+            CanCurrentUserDelete = false;
+            if (IsItOwnProfile || User.IsInRole("Administrator"))
             {
-                IsItOwnProfile = true;
-            }
-            else
-            {
-                IsItOwnProfile = false;
+                CanCurrentUserDelete = true;
             }
         }
 

@@ -6,69 +6,81 @@
 <div class="qw-dm-page">
     <div class="row qw-dm-section">
         <!-- PEOPLE YOU CHAT WITH -->
-        <div class="col-md-3 mb-3">
+        <div class="col-lg-3 col-4 mb-3">
             <h4>
                 Direct messages
             </h4>
 
             <ul class="qw-dm-list">
-                @foreach (var user in Model.ChatRooms)
+                @if (Model.ChatRooms.Count > 0)
                 {
-                    <li class="mt-2">
-                        <a asp-page="/User/Messages" asp-route-id="@user.Id">
-                            @if (user.HasImage)
-                            {
-                                <img class="qw-sm-profile" src="/imgs/users/@(user.Id).jpg">
-                            }
-                            else
-                            {
-                                <img class="qw-sm-profile" src="/imgs/default.jpg">
-                            }
-                            @user.DisplayName
-                        </a>
-                    </li>
+                    @foreach (var user in Model.ChatRooms)
+                    {
+                        <li class="mt-2">
+                            <a asp-page="/User/Messages" asp-route-id="@user.Id">
+                                @if (user.HasImage)
+                                {
+                                    <img class="qw-sm-profile" src="/imgs/users/@(user.Id).jpg">
+                                }
+                                else
+                                {
+                                    <img class="qw-sm-profile" src="/imgs/default.jpg">
+                                }
+                                @user.DisplayName
+                            </a>
+                        </li>
+                    }
+
+                }
+                else
+                {
+                    <div class="text-muted">No chats yet!</div>
                 }
             </ul>
 
         </div>
 
-        <div class="col-md-9 qw-dm-section d-flex flex-column">
+        <div class="col-lg-9 col-8 qw-dm-section d-flex flex-column">
             <h3 class="pl-3">
                 @Model.CurrentChat
             </h3>
 
             <!-- MESSAGES -->
 
-            <ul class="qw-dms p-3 flex-grow-1">
-                @foreach (var message in Model.Messages)
+            <ul class="qw-dms p-3 flex-grow-1" id="messageList">
+                @if (Model.ChatRooms.Count > 0)
                 {
-                    <li class="qw-dm py-2">
-                        @if (message.Author.HasImage)
-                        {
-                            <img class="qw-sm-profile" src="/imgs/users/@(message.Author.Id).jpg">
-                        }
-                        else
-                        {
-                            <img class="qw-sm-profile" src="/imgs/default.jpg">
-                        }
-                        <div class="d-flex flex-row">
-                            <a asp-page="/Profile" asp-route-id="@message.Author.Id" class="qw-dm-author">@message.Author.DisplayName</a>
-                            <div class="qw-dm-date ml-1">@message.CreationDate.Humanize()</div>
-                        </div>
-                        <div class="qw-dm-content">@message.Content</div>
-                    </li>
+                    @foreach (var message in Model.Messages)
+                    {
+                        <li class="qw-dm py-2">
+                            @if (message.Author.HasImage)
+                            {
+                                <img class="qw-sm-profile" src="/imgs/users/@(message.Author.Id).jpg">
+                            }
+                            else
+                            {
+                                <img class="qw-sm-profile" src="/imgs/default.jpg">
+                            }
+                            <div class="d-flex flex-row">
+                                <div class="qw-dm-author">@message.Author.DisplayName</div>
+                                <div class="qw-dm-date ml-1">@message.CreationDate.Humanize()</div>
+                            </div>
+                            <div class="qw-dm-content">@message.Content</div>
+                        </li>
+                    }
                 }
             </ul>
             <!-- New message -->
             <div class="row p-3">
                 <div class="input-group">
-                    <textarea id="new-message-text"
+                    <textarea id="newMessageText"
                               class="form-control"
                               aria-label="With textarea"></textarea>
                     <div class="input-group-append">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" id="sendButton">
                             Send
                         </button>
+                        
                     </div>
                 </div>
             </div>
@@ -77,3 +89,77 @@
     </div>
 
 </div>
+
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+@*<script src="~/js/chat.js"></script>*@
+
+<script type="text/javascript" language="javascript">
+    "use strict";
+
+    var userId = @Model.UserId;
+    var currentUserId = @Model.CurrentUserId
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+    // DOM CALLS
+    var sendButton = document.getElementById("sendButton");
+    var messageTextArea = document.getElementById("newMessageText");
+    var messageList = document.getElementById("messageList");
+
+    // Init connection
+    sendButton.disabled = true;
+    connection.start().then(function () {
+        sendButton.disabled = false;
+        messageList.scrollTo(0, messageList.scrollHeight);
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    // Send message
+    sendButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var message = messageTextArea.value;
+        if (userId === 0 || message === "") {
+            return;
+        }
+
+        messageTextArea.value = "";
+
+        connection.invoke("SendMessage", userId, message).catch(function (err) {
+            return console.error(err.toString());
+        });
+    });
+
+    // Receive message
+    connection.on("ReceiveMessage", function (sender, date, message) {
+        if (sender.id == currentUserId || sender.id == userId) {
+            appendList(sender, date, message);
+        }
+    });
+
+    function appendList(sender, date, message) {
+        var imageSrc;
+
+        if (sender.hasImage) {
+            imageSrc = `/imgs/users/${sender.id}.jpg`;
+        } else {
+            imageSrc = "/imgs/default.jpg";
+        }
+
+        messageList.insertAdjacentHTML(
+            'beforeEnd',
+            `<li class="qw-dm py-2">
+                <img class="qw-sm-profile" src="${imageSrc}">
+                <div class="d-flex flex-row">
+                    <div class="qw-dm-author">${sender.displayName}</div>
+                    <div class="qw-dm-date ml-1">${date}</div>
+                </div>
+                <div class="qw-dm-content">${message}</div>
+            </li>`
+        );
+
+        messageList.scrollTo(0, messageList.scrollHeight);
+    }
+</script>

@@ -1,0 +1,54 @@
+﻿@model Quacker.Web.ViewComponents.PostViewComponent.PostSpecification
+
+<div class="qw-post-header">
+    @if (Model.Post.Author.HasImage)
+    {
+        <img class="qw-sm-profile" src="/imgs/users/@(Model.Post.Author.Id).jpg">
+    }
+    else
+    {
+        <img class="qw-sm-profile" src="/imgs/default.jpg">
+    }
+    <a asp-page="/Profile" asp-route-id="@Model.Post.Author.Id" class="qw-post-author">@Model.Post.Author.DisplayName</a>
+    <div class="qw-post-date">@Model.Post.CreationDate.Humanize()</div>
+    @if (Model.IsDeletable)
+    {
+        <div class="qw-user-buttons">
+            <span>
+                <form asp-page-handler="DeletePost">
+                    <input type="hidden" asp-for="DeletePostId" value="@Model.Post.Id" />
+                    <input type="hidden" asp-for="UserId" />
+                    <button type="submit" class="btn btn-danger ml-3">Delete</button>
+                </form>
+            </span>
+        </div>
+    }
+</div>
+
+<div class="qw-post-content">
+    @Model.Post.Content
+    @if (Model.Post.HasImage)
+    {
+        <img src="/imgs/posts/@Model.Post.Author.Id/@(Model.Post.Id).jpg">
+    }
+</div>
+
+
+<div class="qw-post-footer mt-2">
+    <div class="qw-post-breads">
+        @if (Model.Post.HasCurrentUserLikedIt)
+        {
+            <i class="fas fa-bread-slice fa-lg active"></i>
+        }
+        else
+        {
+            <i class="fas fa-bread-slice fa-lg"></i>
+        }
+        @Model.Post.NumberOfLikes
+    </div>
+    <div class="qw-post-comments">
+        <i class="fas fa-comment fa-lg"></i>
+        @Model.Post.NumberOfComments
+    </div>
+</div>
+

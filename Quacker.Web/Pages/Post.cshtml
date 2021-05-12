@@ -6,45 +6,10 @@
 <div class="row">
     <div class="col-12">
         <div class="qw-post p-3 qw-card">
-            <div class="qw-post-header">
-                @if (Model.Post.Author.HasImage)
-                {
-                    <img class="qw-sm-profile" src="/imgs/users/@(Model.Post.Author.Id).jpg">
-                }
-                else
-                {
-                    <img class="qw-sm-profile" src="/imgs/default.jpg">
-                }
-                <a asp-page="/Profile" asp-route-id="@Model.Post.Author.Id" class="qw-post-author">@Model.Post.Author.DisplayName</a>
-                <div class="qw-post-date">@Model.Post.CreationDate.Humanize()</div>
-            </div>
 
-            <div class="qw-post-content">
-                @Model.Post.Content
-                @if (Model.Post.HasImage)
-                {
-                    <img src="/imgs/posts/@Model.Post.Author.Id/@(Model.Post.Id).jpg">
-                }
-            </div>
+            <vc:post post="@Model.Post" is-deletable="@false" user-id="0" delete-post-id="0">
+            </vc:post>
 
-
-            <div class="qw-post-footer mt-2">
-                <div class="qw-post-breads">
-                    @if (Model.Post.HasCurrentUserLikedIt)
-                    {
-                        <i class="fas fa-bread-slice fa-lg active"></i>
-                    }
-                    else
-                    {
-                        <i class="fas fa-bread-slice fa-lg"></i>
-                    }
-                    @Model.Post.NumberOfLikes
-                </div>
-                <div class="qw-post-comments">
-                    <i class="fas fa-comment fa-lg"></i>
-                    @Model.Post.NumberOfComments
-                </div>
-            </div>
         </div>
 
         <div class="qw-comment-section p-3 mb-3 qw-card">
@@ -75,8 +40,14 @@
                 </div>
             }
 
-
+            <hr>
             <ul class="qw-comments">
+                @if (Model.Comments.Count == 0)
+                {
+                    <div class="d-flex justify-content-center" style="width: 100%;">
+                        <div class="text-muted">No comments yet!</div>
+                    </div>
+                }
                 @foreach (var comment in Model.Comments)
                 {
                     <li class="qw-comment py-2">
@@ -91,13 +62,16 @@
                         <a asp-page="/Profile" asp-route-id="@comment.Author.Id" class="qw-post-author">@comment.Author.DisplayName</a>
                         <div class="qw-post-date">@comment.CreationDate.Humanize()</div>
                         <div class="qw-comment-content">@comment.Content</div>
-                        <div class="qw-user-buttons">
-                            <form asp-page-handler="DeleteComment">
-                                <input type="hidden" asp-for="DeleteCommentId" value="@comment.Id" />
-                                <input type="hidden" asp-for="Id" />
-                                <button type="submit" class="btn btn-danger ml-3">Delete</button>
-                            </form>
-                        </div>
+                        @if(Model.CurrentUser.Id == comment.Author.Id || User.IsInRole("Administrator"))
+                        {
+                            <div class="qw-user-buttons">
+                                <form asp-page-handler="DeleteComment">
+                                    <input type="hidden" asp-for="DeleteCommentId" value="@comment.Id" />
+                                    <input type="hidden" asp-for="Id" />
+                                    <button type="submit" class="btn btn-danger ml-3">Delete</button>
+                                </form>
+                            </div>
+                        }
                     </li>
                 }
             </ul>
